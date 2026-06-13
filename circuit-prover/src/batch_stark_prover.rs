@@ -584,6 +584,17 @@ where
         }
     }
 
+    fn num_public_values(&self) -> usize {
+        match self {
+            Self::Const(a) => a.num_public_values(),
+            Self::Public(a) => a.num_public_values(),
+            Self::Alu(a) => a.num_public_values(),
+            Self::Dynamic(a) => {
+                <dyn CloneableBatchAir<SC> as BaseAir<Val<SC>>>::num_public_values(a.air())
+            }
+        }
+    }
+
     fn preprocessed_width(&self) -> usize {
         match self {
             Self::Const(a) => BaseAir::<Val<SC>>::preprocessed_width(a),
